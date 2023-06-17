@@ -1,35 +1,38 @@
 import throttle from 'lodash.throttle';
 const STORAGE_KEY = 'feedback-form-state';
-const form = document.querySelector('.feedback-form');
 let formData = {};
+
+const form = document.querySelector('.feedback-form');
+const { email, message } = form;
 
 form.addEventListener('input', throttle(handleFormInput, 500));
 form.addEventListener('submit', handleFormSubmit);
 
 function handleFormInput() {
+  formData = { email: email.value, message: message.value };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-  formData = { email: form.email.value, message: form.message.value };
+  // console.log(JSON.stringify(formData));
 }
 
 function handleFormSubmit(event) {
   event.preventDefault();
-  console.log({ email: form.email.value, message: form.message.value });
+  console.log({ email: email.value, message: message.value });
 
-  if (form.email.value === '' || form.message.value === '') {
+  if (email.value === '' || message.value === '') {
     return alert('Будь ласка, заповніть всі поля');
   }
 
   localStorage.removeItem(STORAGE_KEY);
   event.currentTarget.reset();
-  dataForm = {};
+  formData = {};
 }
 
 reloadPage();
 function reloadPage() {
-  formData = localStorage.getItem(STORAGE_KEY);
+  formData = JSON.parse(localStorage.getItem(STORAGE_KEY));
   if (formData) {
-    form.email.value = formData.email || '';
-    form.message.value = formData.message || '';
+    email.value = formData.email || '';
+    message.value = formData.message || '';
   }
 }
 
@@ -43,7 +46,9 @@ function reloadPage() {
 // Під час сабміту форми очищуй сховище і поля форми,
 //     а також виводь у консоль об'єкт з полями email,
 //      message та їхніми поточними значеннями.
+
 //===============info from the class
+
 // import throttle from 'lodash.throttle';
 
 // const STORAGE_MASSAGE = 'feedback-massage';

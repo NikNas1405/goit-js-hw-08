@@ -10,7 +10,7 @@ const galleryWrapper = document.querySelector('.gallery');
 function galleryItemsArray() {
   return galleryItems
     .map(({ preview, original, description }) => {
-      return ` <li class="gallery__item">
+      return ` <li class="gallery__item" style="list-style: none">
     <a class="gallery__link" href="${original}">
      <img
       class="gallery__image"
